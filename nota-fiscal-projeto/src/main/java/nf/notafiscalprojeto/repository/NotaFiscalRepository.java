@@ -11,8 +11,8 @@ import java.util.List;
 public interface NotaFiscalRepository extends JpaRepository<NotaFiscal, Long> {
 
     NotaFiscal findByNumeroNota(String numeroNota);
+
     List<NotaFiscal> findByStatus(String status);
 
-
-
+    List<NotaFiscal> findByFornecedorNome(String fornecedor);
 }

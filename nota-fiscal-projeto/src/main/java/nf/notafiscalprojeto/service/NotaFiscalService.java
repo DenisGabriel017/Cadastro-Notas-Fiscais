@@ -2,12 +2,10 @@ package nf.notafiscalprojeto.service;
 
 import nf.notafiscalprojeto.model.NotaFiscal;
 import nf.notafiscalprojeto.repository.NotaFiscalRepository;
-import org.aspectj.weaver.ast.Not;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,7 +17,7 @@ public class NotaFiscalService {
     }
 
     public NotaFiscal criarNotaFiscal(NotaFiscal notaFiscal){
-        if(notaFiscal == null || notaFiscal.getNumeroNota() == null || notaFiscal.getDataEmissão() == null){
+        if(notaFiscal == null || notaFiscal.getNumeroNota() == null || notaFiscal.getDataEmissao() == null){
             throw new IllegalArgumentException("Os campos obrigatórios da nota fiscal não foram fornecidos ");
         }
         System.out.println("Nota criada com sucesso!");
@@ -45,19 +43,22 @@ public class NotaFiscalService {
         if (!notaFiscalRepository.existsById(notaFiscalId)) {
             return null;
         }
-        NotaFiscal notaFiscalAtulizada = (NotaFiscal) notaFiscalRepository.save(notaFiscal);
+        NotaFiscal notaFiscalAtulizada = notaFiscalRepository.save(notaFiscal);
 
         return notaFiscalAtulizada;
     }
 
-    public NotaFiscal excluirNotaFiscal(Long id){
+    public ResponseEntity<Object> excluirNotaFiscal(Long id){
         if (notaFiscalRepository.existsById(id)){
             notaFiscalRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
         }
 
-        System.out.println("Nota excluida com sucesso!");
-        return null;
+        return ResponseEntity.notFound().build();
+    }
 
+    public List<NotaFiscal> findByPorNomeFornecedor(String fornecedor){
+        return notaFiscalRepository.findByFornecedorNome(fornecedor);
     }
 
 }

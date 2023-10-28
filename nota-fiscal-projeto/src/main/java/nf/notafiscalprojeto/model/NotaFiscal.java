@@ -1,40 +1,58 @@
 package nf.notafiscalprojeto.model;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "nota_fiscal")
 public class NotaFiscal {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_notafiscal")
     private long id;
+
+    @Column(name = "numero_nota")
+    @NotNull
     private String numeroNota;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "data_emissao")
+    @NotNull
     private LocalDate dataEmissao;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "data_de_vencimento")
+    @NotNull
     private LocalDate dataDeVencimento;
-    @Column(name = "valor_nota")
-    private double valorNota;
-    @Column(name = "status")
-    private String status;
-    private String fornecedor;
-    private String formaDePagamento;
-    public NotaFiscal(){
 
-    }
-    public NotaFiscal(String numeroNota, LocalDate dataEmissao, LocalDate dataDeVencimento, double valorNota, String status, String fornecedor, String formaDePagamento) {
+    @Column(name = "valor_nota")
+    @NotNull
+    private double valorNota;
+
+    @Column(name = "status")
+    @NotNull
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
+
+    @Column(name = "forma_de_pagamento")
+    @NotNull
+    private String formaDePagamento;
+
+    public NotaFiscal() {}
+
+    public NotaFiscal(String numeroNota, LocalDate dataEmissao, LocalDate dataDeVencimento, double valorNota, String status, String formaDePagamento, Fornecedor fornecedor) {
         this.numeroNota = numeroNota;
         this.dataEmissao = dataEmissao;
         this.dataDeVencimento = dataDeVencimento;
         this.valorNota = valorNota;
         this.status = status;
         this.fornecedor = fornecedor;
+
+
         this.formaDePagamento = formaDePagamento;
     }
 
@@ -54,12 +72,12 @@ public class NotaFiscal {
         this.numeroNota = numeroNota;
     }
 
-    public LocalDate getDataEmissão() {
+    public LocalDate getDataEmissao() {
         return dataEmissao;
     }
 
-    public void setDataEmissão(LocalDate dataEmissão) {
-        this.dataEmissao = dataEmissão;
+    public void setDataEmissao(LocalDate dataEmissao) {
+        this.dataEmissao = dataEmissao;
     }
 
     public LocalDate getDataDeVencimento() {
@@ -86,22 +104,6 @@ public class NotaFiscal {
         this.status = status;
     }
 
-    public LocalDate getDataEmissao() {
-        return dataEmissao;
-    }
-
-    public void setDataEmissao(LocalDate dataEmissao) {
-        this.dataEmissao = dataEmissao;
-    }
-
-    public String getFornecedor() {
-        return fornecedor;
-    }
-
-    public void setFornecedor(String fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
     public String getFormaDePagamento() {
         return formaDePagamento;
     }
@@ -109,4 +111,13 @@ public class NotaFiscal {
     public void setFormaDePagamento(String formaDePagamento) {
         this.formaDePagamento = formaDePagamento;
     }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+
 }
